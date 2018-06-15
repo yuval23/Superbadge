@@ -1,0 +1,21 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+  
+<!-- <ltng:require styles="{!$Resource.boatTile}" /> -->
+ 
+ <aura:attribute name="formData" type="Object" />
+ <aura:attribute name="searchText" type="String" />
+ 
+ <aura:handler name="formsubmit" event="c:FormSubmit" action="{!c.onFormSubmit}" phase="capture"/> 
+
+    <lightning:card title="Find a Boat">   
+        <p class="slds-p-horizontal_small">
+            <c:BoatSearchForm />
+        </p>
+    </lightning:card>
+    <lightning:card title="Matching Boats">   
+        <p class="slds-p-horizontal_small">
+            <c:BoatSearchResults aura:id="BSRcmp" />
+        </p>
+    </lightning:card>
+    
+</aura:component>

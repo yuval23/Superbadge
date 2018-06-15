@@ -1,0 +1,78 @@
+<aura:component controller="BoatReviews">
+	<aura:attribute name="boat" type="Boat__c" access="public"/>
+    <aura:attribute name="boatReviews" type="BoatReview__c[]" access="private"/>
+    <aura:handler name="init"   action="{!c.doInit}" value="{!this}" />
+    
+    <aura:method name="refresh" action="{!c.doInit}" access="public"></aura:method>
+	<aura:handler name="change" action="{!c.doInit}" value="{!v.boat}"/>
+    
+    <div class="slds-feed" >
+        <ui:scrollerWrapper class="scrollerSize">
+
+        <aura:if isTrue="{!v.boatReviews.length == 0}">
+               <div class="slds-align--absolute-center"> No reviews available </div>
+         
+        <aura:set attribute="else">
+        <ul class="slds-feed__list">
+            <aura:iteration items="{!v.boatReviews}" var="BoatReview"> 
+            <li class="slds-feed__item">
+            <article class="slds-post">
+            <header class="slds-post__header slds-media">
+                <div class="slds-media__figure">
+                    <a href="javascript:void(0);" class="slds-avatar slds-avatar_circle slds-avatar_medium">
+                        
+                        <img alt="{!BoatReview.CreatedBy.Name}" src="{!BoatReview.CreatedBy.SmallPhotoUrl}" title="{!BoatReview.CreatedBy.Name}" />
+                    </a>
+                </div>
+            	<div class="slds-media__body">
+            		<div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+           				<p>
+                            <a href="javascript:void(0)" onclick="{!c.onUserInfoClick}" data-userid="{!BoatReview.CreatedBy.Id}">
+                                {!BoatReview.CreatedBy.Name}
+                            </a>
+                            - {!BoatReview.CreatedBy.CompanyName}
+                   
+                        </p>
+                    </div>
+            		<p class="slds-text-body_small"><ui:outputDateTime  value="{!BoatReview.CreatedDate}" /> </p>
+            	</div>
+            </header>
+            <div class="slds-post__content slds-text-longform">
+            	<li class="slds-item">
+                      <p class="slds-text-title--caps">{!BoatReview.Name}</p> 
+                </li>
+                <ui:outputRichText class="slds-text-longform" value="{!BoatReview.Comment__c}"/> 
+
+                
+            
+           </div>
+
+            <footer class="slds-post__footer">
+                <ul class="slds-post__footer-actions-list slds-list_horizontal">
+                    <li class="slds-col slds-item slds-m-right_medium">
+                        <p class="slds-text-title--caps">RATING - {!BoatReview.Rating__c}</p>
+                		<c:FiveStarRating aura:id="FiveStarRating" readonly="true" value="{!BoatReview.Rating__c}"/>
+
+                        
+                    </li>
+                    
+                </ul>
+                <ul class="slds-post__footer-meta-list slds-list_horizontal slds-has-dividers_right slds-text-title">
+                    
+                    <li class="slds-item">
+                         <ui:outputDate  value="{!BoatReview.LastModifiedDate}" />
+                    </li>
+                    
+                </ul>
+            </footer>
+
+            </article>
+            </li>
+            </aura:iteration>  
+        </ul>
+        </aura:set>
+         </aura:if> 
+        </ui:scrollerWrapper>
+    </div>
+  
+</aura:component>

@@ -1,0 +1,56 @@
+<aura:component>
+	<aura:attribute name="boat" type="Boat__c" access="public"/>
+    <aura:attribute name="boatReview" type="BoatReview__c" access="private"
+                	default="{'sobjectType':'BoatReview__c',
+                             	  'Boat__c':'', 
+                             	  'Name':'', 
+                             	  'Comment__c':'',
+                             	  'Rating__c':0
+                             }"/>
+
+
+    
+    <aura:attribute name="record" type="BoatReview__c" access="private"/>
+    <aura:attribute name="recordError" type="String" access="private"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:registerEvent name="BoatReviewAdded" type="c:BoatReviewAdded"/>
+    
+    <force:recordData aura:id="service"
+                      mode="EDIT"
+                      fields="Id, Name, Comment__c, Boat__c"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.boatReview}"
+                      recordUpdated="{!c.onRecordUpdated}"/>
+    
+
+      
+    <form class="slds-form slds-form_stacked slds-p-around--card-wrapper-spacing">
+         
+         <lightning:messages />
+        
+         <lightning:input type="text" name="title" label="Title" value="{!v.boatReview.Name}" />
+     
+         <lightning:inputRichText disabledCategories="FORMAT_FONT" label="Description" labelVisible="true" value="{!v.boatReview.Comment__c }" placeholder="Comment.."/>
+        <div class="slds-form-element">
+        <label class="slds-form-element__label" for="rating">Rating</label>
+        <div class="slds-form-element__control">
+        	<c:FiveStarRating aura:id="FiveStarRating" value="{!v.boatReview.Rating__c}" readonly="false"/>
+         </div>
+		</div>
+        <div class="slds-align--absolute-center slds-m-top_medium">
+         	<lightning:button name="Submit" label="Submit" iconName="utility:save" iconPosition="left" onclick="{! c.onSave }" /> 
+ 	     </div>
+        
+     </form >
+	  <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            <ui:message title="Error" severity="error" closable="true">
+                {!v.recordError}
+            </ui:message>
+        </div>
+    </aura:if>
+        
+</aura:component>

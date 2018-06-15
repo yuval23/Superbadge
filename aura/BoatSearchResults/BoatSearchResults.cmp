@@ -1,0 +1,37 @@
+<aura:component controller="BoatSearchResults">
+   
+    <aura:attribute name="boatTypeId" type="String"/>
+    <aura:attribute name="selectedBoatId" type="String"/>
+
+	<aura:attribute name="boats" type="Boat__c[]"/>
+    <aura:attribute name="noResults" type="Boolean" default="false"/>
+
+    <aura:method name="search" access="public" >
+        <aura:attribute name="boatTypeId" type="Id"/>
+    </aura:method>
+   
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:handler name="boatSelect" event="c:BoatSelect" action="{!c.onBoatSelect}" /> 
+
+
+    <!-- <aura:handler name="search" value="{!v.boatTypeId}" action="{!c.doSearch}" access="public"/>  -->
+
+    <lightning:layout multipleRows="true" >
+            <aura:iteration items="{!v.boats}" var="boat">   
+                        <lightning:layoutItem size="12" smallDeviceSize="6" mediumDeviceSize="4" largeDeviceSize="3" >                
+                                <c:BoatTile boat="{!boat}" selected="{!boat.Id == v.selectedBoatId ? true:false}"/>
+                       </lightning:layoutItem>               
+            </aura:iteration>
+    </lightning:layout>
+
+
+
+   <lightning:layout multipleRows="false">   
+        <lightning:layoutItem size="12" padding="around-small">                
+                <aura:if isTrue="{!v.noResults}">
+                        <div class="slds-align--absolute-center"> No boats found </div>
+                </aura:if> 
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>
